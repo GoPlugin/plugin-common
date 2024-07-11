@@ -1,0 +1,18 @@
+package core
+
+import (
+	"context"
+
+	"github.com/goplugin/plugin-common/pkg/capabilities"
+)
+
+type CapabilitiesRegistry interface {
+	GetLocalNode(ctx context.Context) (capabilities.Node, error)
+	Get(ctx context.Context, ID string) (capabilities.BaseCapability, error)
+	GetTrigger(ctx context.Context, ID string) (capabilities.TriggerCapability, error)
+	GetAction(ctx context.Context, ID string) (capabilities.ActionCapability, error)
+	GetConsensus(ctx context.Context, ID string) (capabilities.ConsensusCapability, error)
+	GetTarget(ctx context.Context, ID string) (capabilities.TargetCapability, error)
+	List(ctx context.Context) ([]capabilities.BaseCapability, error)
+	Add(ctx context.Context, c capabilities.BaseCapability) error
+}
