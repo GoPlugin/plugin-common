@@ -3,7 +3,7 @@ package core
 import (
 	"context"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median"
+	"github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median"
 
 	"github.com/goplugin/plugin-common/pkg/types"
 )

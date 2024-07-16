@@ -17,8 +17,8 @@ import (
 
 	"github.com/linkedin/goavro/v2"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median"
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/goplugin/plugin-common/pkg/logger"

@@ -11,7 +11,7 @@ import (
 	"github.com/shopspring/decimal"
 	"google.golang.org/protobuf/proto"
 
-	ocrcommon "github.com/smartcontractkit/libocr/commontypes"
+	ocrcommon "github.com/goplugin/plugin-libocr/commontypes"
 
 	"github.com/goplugin/plugin-common/pkg/capabilities"
 	"github.com/goplugin/plugin-common/pkg/capabilities/consensus/ocr3/types"

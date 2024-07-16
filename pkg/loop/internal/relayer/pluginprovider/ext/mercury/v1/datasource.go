@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	ocr2plus_types "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	ocr2plus_types "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	"github.com/goplugin/plugin-common/pkg/loop/internal/pb"
 	mercury_v1_pb "github.com/goplugin/plugin-common/pkg/loop/internal/pb/mercury/v1"

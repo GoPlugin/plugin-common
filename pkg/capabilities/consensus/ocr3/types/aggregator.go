@@ -3,7 +3,7 @@ package types
 import (
 	"strings"
 
-	ocrcommon "github.com/smartcontractkit/libocr/commontypes"
+	ocrcommon "github.com/goplugin/plugin-libocr/commontypes"
 
 	"github.com/goplugin/plugin-common/pkg/logger"
 	"github.com/goplugin/plugin-common/pkg/values"

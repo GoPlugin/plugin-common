@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/ocr3types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/ocr3types"
 
 	"github.com/goplugin/plugin-common/pkg/services"
 )

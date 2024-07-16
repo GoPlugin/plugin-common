@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	"github.com/stretchr/testify/assert"
 

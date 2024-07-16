@@ -1,8 +1,8 @@
 package pluginprovider
 
 import (
-	"github.com/smartcontractkit/libocr/commontypes"
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/commontypes"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	chainreadertest "github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/chainreader/test"
 )

@@ -4,9 +4,9 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/smartcontractkit/libocr/commontypes"
-	"github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median"
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/commontypes"
+	"github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	errorlogtest "github.com/goplugin/plugin-common/pkg/loop/internal/core/services/errorlog/test"
 	chainreadertest "github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/chainreader/test"

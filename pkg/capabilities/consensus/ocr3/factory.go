@@ -3,7 +3,7 @@ package ocr3
 import (
 	"context"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/ocr3types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/ocr3types"
 
 	"github.com/goplugin/plugin-common/pkg/capabilities/consensus/ocr3/requests"
 

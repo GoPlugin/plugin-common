@@ -1,7 +1,7 @@
 package ocr2
 
 import (
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 	"google.golang.org/grpc"
 
 	"github.com/goplugin/plugin-common/pkg/loop/internal/goplugin"

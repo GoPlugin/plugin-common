@@ -3,7 +3,7 @@ package monitoring
 import (
 	"io"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 )
 
 // NodesParser extracts multiple nodes' configurations from the configuration server, eg. weiwatchers.com

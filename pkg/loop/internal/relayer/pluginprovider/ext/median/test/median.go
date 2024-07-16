@@ -13,8 +13,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median"
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	errorlogtest "github.com/goplugin/plugin-common/pkg/loop/internal/core/services/errorlog/test"
 	reportingplugintest "github.com/goplugin/plugin-common/pkg/loop/internal/reportingplugin/test"

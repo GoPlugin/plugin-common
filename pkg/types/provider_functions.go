@@ -1,6 +1,6 @@
 package types
 
-import ocrtypes "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+import ocrtypes "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 type FunctionsProvider interface {
 	PluginProvider

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/ocr3types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/ocr3types"
 	"github.com/stretchr/testify/assert"
 
 	ocr2test "github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/ocr2/test"

@@ -3,7 +3,7 @@ package core
 import (
 	"context"
 
-	"github.com/smartcontractkit/libocr/commontypes"
+	"github.com/goplugin/plugin-libocr/commontypes"
 )
 
 type TelemetryService interface {

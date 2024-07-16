@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/ocr3types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/ocr3types"
 
 	mercuryv1test "github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/ext/mercury/v1/test"
 	mercuryv2test "github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/ext/mercury/v2/test"

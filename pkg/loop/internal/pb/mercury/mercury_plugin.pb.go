@@ -126,7 +126,7 @@ func (x *NewMercuryPluginResponse) GetMercuryPluginInfo() *MercuryPluginInfo {
 	return nil
 }
 
-// MercuryPluginConfig represents [github.com/smartcontractkit/libocr/offchainreporting2plus/ocr3types.MercuryPluginConfig]
+// MercuryPluginConfig represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/ocr3types.MercuryPluginConfig]
 type MercuryPluginConfig struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -230,7 +230,7 @@ func (x *MercuryPluginConfig) GetMaxDurationObservation() int64 {
 	return 0
 }
 
-// MercuryPluginLimits represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPluginLimits]
+// MercuryPluginLimits represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPluginLimits]
 type MercuryPluginLimits struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -286,7 +286,7 @@ func (x *MercuryPluginLimits) GetMaxReportLength() uint64 {
 	return 0
 }
 
-// MercuryPluginInfo represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPluginInfo]
+// MercuryPluginInfo represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPluginInfo]
 type MercuryPluginInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -342,7 +342,7 @@ func (x *MercuryPluginInfo) GetMercuryPluginLimits() *MercuryPluginLimits {
 	return nil
 }
 
-// ObservationRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPlugin.Observation].
+// ObservationRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPlugin.Observation].
 type ObservationRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -398,7 +398,7 @@ func (x *ObservationRequest) GetPreviousReport() []byte {
 	return nil
 }
 
-// ObservationResponse has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPlugin.Observation].
+// ObservationResponse has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPlugin.Observation].
 type ObservationResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -447,7 +447,7 @@ func (x *ObservationResponse) GetObservation() []byte {
 }
 
 // TODO some definitions are shared with reporting plugin for ocr2. not sure to copy or share. copy for now...
-// AttributedObservation represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.AttributedObservation]
+// AttributedObservation represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.AttributedObservation]
 type AttributedObservation struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -503,7 +503,7 @@ func (x *AttributedObservation) GetObserver() uint32 {
 	return 0
 }
 
-// ReportRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPlugin.Report].
+// ReportRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPlugin.Report].
 type ReportRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -567,7 +567,7 @@ func (x *ReportRequest) GetObservations() []*AttributedObservation {
 	return nil
 }
 
-// ReportResponse has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPlugin.Report].
+// ReportResponse has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPlugin.Report].
 type ReportResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

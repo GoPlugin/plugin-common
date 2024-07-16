@@ -4,9 +4,9 @@ import (
 	"context"
 	"math"
 
-	"github.com/smartcontractkit/libocr/commontypes"
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/ocr3types"
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/commontypes"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/ocr3types"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	ocr3pb "github.com/goplugin/plugin-common/pkg/loop/internal/pb/ocr3"
 

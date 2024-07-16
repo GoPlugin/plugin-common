@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 )
 
 func ReportTimestampToPb(ts libocr.ReportTimestamp) *ReportTimestamp {

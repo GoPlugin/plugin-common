@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/mwitkow/grpc-proxy/proxy"
-	"github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median"
+	"github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median"
 	"google.golang.org/grpc"
 
 	"github.com/goplugin/plugin-common/pkg/logger"

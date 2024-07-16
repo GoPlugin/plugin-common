@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	validationtest "github.com/goplugin/plugin-common/pkg/loop/internal/core/services/validation/test"
 	testtypes "github.com/goplugin/plugin-common/pkg/loop/internal/test/types"

@@ -22,7 +22,7 @@ message NewMercuryPluginResponse {
   MercuryPluginInfo mercuryPluginInfo = 2;
 }
 
-// MercuryPluginConfig represents [github.com/smartcontractkit/libocr/offchainreporting2plus/ocr3types.MercuryPluginConfig]
+// MercuryPluginConfig represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/ocr3types.MercuryPluginConfig]
 message MercuryPluginConfig {
   bytes configDigest = 1; // [32]byte
   uint32 oracleID = 2; // uint8
@@ -34,13 +34,13 @@ message MercuryPluginConfig {
   int64 maxDurationObservation = 8;
 }
 
-// MercuryPluginLimits represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPluginLimits]
+// MercuryPluginLimits represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPluginLimits]
 message MercuryPluginLimits {
   uint64 maxObservationLength = 1;
   uint64 maxReportLength = 2;
 }
 
-// MercuryPluginInfo represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPluginInfo]
+// MercuryPluginInfo represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPluginInfo]
 message MercuryPluginInfo {
   string name = 1;
   MercuryPluginLimits mercuryPluginLimits = 3;
@@ -52,32 +52,32 @@ service MercuryPlugin {
   rpc Close (google.protobuf.Empty) returns (google.protobuf.Empty) {}
 }
 
-// ObservationRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPlugin.Observation].
+// ObservationRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPlugin.Observation].
 message ObservationRequest {
   ReportTimestamp reportTimestamp = 1;
   bytes previousReport = 2;
 }
 
-// ObservationResponse has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPlugin.Observation].
+// ObservationResponse has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPlugin.Observation].
 message ObservationResponse {
   bytes observation = 1;
 }
 
 //TODO some definitions are shared with reporting plugin for ocr2. not sure to copy or share. copy for now...
-// AttributedObservation represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.AttributedObservation]
+// AttributedObservation represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.AttributedObservation]
 message AttributedObservation {
   bytes observation = 1;
   uint32 observer = 2; // uint8
 }
 
-// ReportRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPlugin.Report].
+// ReportRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPlugin.Report].
 message ReportRequest {
   ReportTimestamp reportTimestamp = 1;
   bytes previousReport = 2;
   repeated AttributedObservation observations = 3;
 }
 
-// ReportResponse has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.MercuryPlugin.Report].
+// ReportResponse has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.MercuryPlugin.Report].
 message ReportResponse {
   bool shouldReport = 1;
   bytes report = 2;

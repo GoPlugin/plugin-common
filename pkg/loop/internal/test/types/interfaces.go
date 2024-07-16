@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/ocr3types"
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/ocr3types"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	looptypes "github.com/goplugin/plugin-common/pkg/loop/internal/types"
 	"github.com/goplugin/plugin-common/pkg/types"

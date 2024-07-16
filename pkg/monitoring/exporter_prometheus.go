@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 )
 
 func NewPrometheusExporterFactory(

@@ -1230,7 +1230,7 @@ func (x *TransactionRequest) GetBalanceCheck() bool {
 	return false
 }
 
-// ContractConfig represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.ContractConfig]
+// ContractConfig represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.ContractConfig]
 type ContractConfig struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1334,7 +1334,7 @@ func (x *ContractConfig) GetOffchainConfig() []byte {
 	return nil
 }
 
-// ConfigDigestRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.OffchainConfigDigester.ConfigDigest].
+// ConfigDigestRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.OffchainConfigDigester.ConfigDigest].
 type ConfigDigestRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1382,7 +1382,7 @@ func (x *ConfigDigestRequest) GetContractConfig() *ContractConfig {
 	return nil
 }
 
-// ConfigDigestReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.OffchainConfigDigester.ConfigDigest].
+// ConfigDigestReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.OffchainConfigDigester.ConfigDigest].
 type ConfigDigestReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1468,7 +1468,7 @@ func (*ConfigDigestPrefixRequest) Descriptor() ([]byte, []int) {
 	return file_relayer_proto_rawDescGZIP(), []int{25}
 }
 
-// ConfigDigestPrefixReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.OffchainConfigDigester.ConfigDigestPrefix].
+// ConfigDigestPrefixReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.OffchainConfigDigester.ConfigDigestPrefix].
 type ConfigDigestPrefixReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1554,7 +1554,7 @@ func (*LatestConfigDetailsRequest) Descriptor() ([]byte, []int) {
 	return file_relayer_proto_rawDescGZIP(), []int{27}
 }
 
-// LatestConfigDetailsReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.ContractConfigTracker.LatestConfigDetails].
+// LatestConfigDetailsReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.ContractConfigTracker.LatestConfigDetails].
 type LatestConfigDetailsReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1610,7 +1610,7 @@ func (x *LatestConfigDetailsReply) GetConfigDigest() []byte {
 	return nil
 }
 
-// LatestConfigRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.ContractConfigTracker.LatestConfig].
+// LatestConfigRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.ContractConfigTracker.LatestConfig].
 type LatestConfigRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1658,7 +1658,7 @@ func (x *LatestConfigRequest) GetChangedInBlock() uint64 {
 	return 0
 }
 
-// LatestConfigReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.ContractConfigTracker.LatestConfig].
+// LatestConfigReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.ContractConfigTracker.LatestConfig].
 type LatestConfigReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1744,7 +1744,7 @@ func (*LatestBlockHeightRequest) Descriptor() ([]byte, []int) {
 	return file_relayer_proto_rawDescGZIP(), []int{31}
 }
 
-// LatestBlockHeightReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.ContractConfigTracker.LatestBlockHeightReply].
+// LatestBlockHeightReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.ContractConfigTracker.LatestBlockHeightReply].
 type LatestBlockHeightReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1792,7 +1792,7 @@ func (x *LatestBlockHeightReply) GetBlockHeight() uint64 {
 	return 0
 }
 
-// ReportTimestamp represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.ReportTimestamp].
+// ReportTimestamp represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.ReportTimestamp].
 type ReportTimestamp struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1856,7 +1856,7 @@ func (x *ReportTimestamp) GetRound() uint32 {
 	return 0
 }
 
-// ReportContext represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.ReportContext].
+// ReportContext represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.ReportContext].
 type ReportContext struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1912,7 +1912,7 @@ func (x *ReportContext) GetExtraHash() []byte {
 	return nil
 }
 
-// AttributedOnchainSignature represents [github.com/smartcontractkit/libocr/offchainreporting2plus/types.AttributedOnchainSignature].
+// AttributedOnchainSignature represents [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.AttributedOnchainSignature].
 type AttributedOnchainSignature struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1968,7 +1968,7 @@ func (x *AttributedOnchainSignature) GetSigner() uint32 {
 	return 0
 }
 
-// TransmitRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.ContractTransmitter.Transmit].
+// TransmitRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.ContractTransmitter.Transmit].
 type TransmitRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2108,7 +2108,7 @@ func (*LatestConfigDigestAndEpochRequest) Descriptor() ([]byte, []int) {
 	return file_relayer_proto_rawDescGZIP(), []int{38}
 }
 
-// LatestConfigDigestAndEpochReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2plus/types.ContractTransmitter.LatestConfigDigestAndEpoch].
+// LatestConfigDigestAndEpochReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2plus/types.ContractTransmitter.LatestConfigDigestAndEpoch].
 type LatestConfigDigestAndEpochReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -5,7 +5,7 @@ import (
 	"math/big"
 	"reflect"
 
-	"github.com/smartcontractkit/libocr/bigbigendian"
+	"github.com/goplugin/plugin-libocr/bigbigendian"
 
 	"github.com/goplugin/plugin-common/pkg/codec/encodings"
 	"github.com/goplugin/plugin-common/pkg/types"

@@ -3,7 +3,7 @@ package v1_test
 import (
 	"math/big"
 
-	ocr2plus_types "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	ocr2plus_types "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	"github.com/goplugin/plugin-common/pkg/types/mercury"
 	mercury_v1_types "github.com/goplugin/plugin-common/pkg/types/mercury/v1"

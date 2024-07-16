@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 
-	p2ptypes "github.com/smartcontractkit/libocr/ragep2p/types"
+	p2ptypes "github.com/goplugin/plugin-libocr/ragep2p/types"
 
 	"github.com/goplugin/plugin-common/pkg/capabilities"
 	"github.com/goplugin/plugin-common/pkg/logger"

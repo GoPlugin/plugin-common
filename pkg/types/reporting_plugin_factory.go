@@ -1,7 +1,7 @@
 package types
 
 import (
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 )
 
 type ReportingPluginFactory interface {

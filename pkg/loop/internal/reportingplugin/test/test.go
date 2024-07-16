@@ -3,8 +3,8 @@ package test
 import (
 	"time"
 
-	"github.com/smartcontractkit/libocr/commontypes"
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/commontypes"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 )
 
 const (

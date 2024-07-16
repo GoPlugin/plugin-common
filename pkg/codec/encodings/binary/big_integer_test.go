@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/smartcontractkit/libocr/bigbigendian"
+	"github.com/goplugin/plugin-libocr/bigbigendian"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 

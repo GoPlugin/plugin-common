@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median"
+	"github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median"
 )
 
 // MedianProvider provides all components needed for a median OCR2 plugin.

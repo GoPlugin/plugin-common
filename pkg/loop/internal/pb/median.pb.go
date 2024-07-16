@@ -198,7 +198,7 @@ func (x *SaveErrorRequest) GetMessage() string {
 	return ""
 }
 
-// ParsedAttributedObservation represents [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ParsedAttributedObservation].
+// ParsedAttributedObservation represents [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ParsedAttributedObservation].
 type ParsedAttributedObservation struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -278,7 +278,7 @@ func (x *ParsedAttributedObservation) GetGasPriceSubunits() *BigInt {
 	return nil
 }
 
-// BuildReportRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.BuildReport].
+// BuildReportRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.BuildReport].
 type BuildReportRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -326,7 +326,7 @@ func (x *BuildReportRequest) GetObservations() []*ParsedAttributedObservation {
 	return nil
 }
 
-// BuildReportReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.BuildReport].
+// BuildReportReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.BuildReport].
 type BuildReportReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -374,7 +374,7 @@ func (x *BuildReportReply) GetReport() []byte {
 	return nil
 }
 
-// MedianFromReportRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.MedianFromReport].
+// MedianFromReportRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.MedianFromReport].
 type MedianFromReportRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -422,7 +422,7 @@ func (x *MedianFromReportRequest) GetReport() []byte {
 	return nil
 }
 
-// MedianFromReportReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.MedianFromReport].
+// MedianFromReportReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.MedianFromReport].
 type MedianFromReportReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -470,7 +470,7 @@ func (x *MedianFromReportReply) GetMedian() *BigInt {
 	return nil
 }
 
-// MaxReportLengthRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.MaxReportLength].
+// MaxReportLengthRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.MaxReportLength].
 type MaxReportLengthRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -518,7 +518,7 @@ func (x *MaxReportLengthRequest) GetN() int64 {
 	return 0
 }
 
-// MaxReportLengthReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.MaxReportLength].
+// MaxReportLengthReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.MaxReportLength].
 type MaxReportLengthReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -604,7 +604,7 @@ func (*LatestTransmissionDetailsRequest) Descriptor() ([]byte, []int) {
 	return file_median_proto_rawDescGZIP(), []int{10}
 }
 
-// LatestTransmissionDetailsReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestTransmissionDetails].
+// LatestTransmissionDetailsReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestTransmissionDetails].
 type LatestTransmissionDetailsReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -684,7 +684,7 @@ func (x *LatestTransmissionDetailsReply) GetLatestTimestamp() *timestamppb.Times
 	return nil
 }
 
-// LatestRoundRequestedRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestRoundRequested].
+// LatestRoundRequestedRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestRoundRequested].
 type LatestRoundRequestedRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -732,7 +732,7 @@ func (x *LatestRoundRequestedRequest) GetLookback() int64 {
 	return 0
 }
 
-// LatestRoundRequestedReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestRoundRequested].
+// LatestRoundRequestedReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestRoundRequested].
 type LatestRoundRequestedReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -796,7 +796,7 @@ func (x *LatestRoundRequestedReply) GetRound() uint32 {
 	return 0
 }
 
-// OnchainConfig represents [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfig].
+// OnchainConfig represents [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfig].
 type OnchainConfig struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -852,7 +852,7 @@ func (x *OnchainConfig) GetMax() *BigInt {
 	return nil
 }
 
-// EncodeRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Encode].
+// EncodeRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Encode].
 type EncodeRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -900,7 +900,7 @@ func (x *EncodeRequest) GetOnchainConfig() *OnchainConfig {
 	return nil
 }
 
-// EncodeReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Encode].
+// EncodeReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Encode].
 type EncodeReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -948,7 +948,7 @@ func (x *EncodeReply) GetEncoded() []byte {
 	return nil
 }
 
-// DecodeRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Decode].
+// DecodeRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Decode].
 type DecodeRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -996,7 +996,7 @@ func (x *DecodeRequest) GetEncoded() []byte {
 	return nil
 }
 
-// DecodeReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Decode].
+// DecodeReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Decode].
 type DecodeReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

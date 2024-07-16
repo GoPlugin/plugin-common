@@ -3,7 +3,7 @@ package types
 import (
 	"context"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2plus/ocr3types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2plus/ocr3types"
 
 	"github.com/goplugin/plugin-common/pkg/types/mercury"
 	v1 "github.com/goplugin/plugin-common/pkg/types/mercury/v1"

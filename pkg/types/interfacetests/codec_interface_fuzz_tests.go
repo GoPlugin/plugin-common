@@ -4,7 +4,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/smartcontractkit/libocr/commontypes"
+	"github.com/goplugin/plugin-libocr/commontypes"
 	"github.com/stretchr/testify/require"
 
 	"github.com/goplugin/plugin-common/pkg/utils/tests"

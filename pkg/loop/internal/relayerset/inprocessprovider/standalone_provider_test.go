@@ -7,9 +7,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 
-	"github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median"
-	ocrtypes "github.com/smartcontractkit/libocr/offchainreporting2/types"
-	libocr "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	"github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median"
+	ocrtypes "github.com/goplugin/plugin-libocr/offchainreporting2/types"
+	libocr "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	ocr2test "github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/ocr2/test"
 	"github.com/goplugin/plugin-common/pkg/loop/internal/relayerset/inprocessprovider"

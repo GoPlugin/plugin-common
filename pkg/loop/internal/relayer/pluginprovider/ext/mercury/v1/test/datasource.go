@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	ocrtypes "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	ocrtypes "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 	"github.com/stretchr/testify/assert"
 
 	testtypes "github.com/goplugin/plugin-common/pkg/loop/internal/test/types"

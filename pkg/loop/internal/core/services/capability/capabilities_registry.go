@@ -13,7 +13,7 @@ import (
 	"github.com/goplugin/plugin-common/pkg/loop/internal/pb"
 	"github.com/goplugin/plugin-common/pkg/types/core"
 
-	p2ptypes "github.com/smartcontractkit/libocr/ragep2p/types"
+	p2ptypes "github.com/goplugin/plugin-libocr/ragep2p/types"
 )
 
 var _ core.CapabilitiesRegistry = (*capabilitiesRegistryClient)(nil)

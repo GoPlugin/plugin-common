@@ -35,14 +35,14 @@ message SaveErrorRequest {
   string message = 1;
 }
 
-// ReportCodec is gRPC adapter of [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec].
+// ReportCodec is gRPC adapter of [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec].
 service ReportCodec {
   rpc BuildReport (BuildReportRequest) returns (BuildReportReply) {}
   rpc MedianFromReport (MedianFromReportRequest) returns (MedianFromReportReply) {}
   rpc MaxReportLength (MaxReportLengthRequest) returns (MaxReportLengthReply) {}
 }
 
-// ParsedAttributedObservation represents [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ParsedAttributedObservation].
+// ParsedAttributedObservation represents [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ParsedAttributedObservation].
 message ParsedAttributedObservation {
   uint32 timestamp = 1;
   BigInt value = 2;
@@ -51,32 +51,32 @@ message ParsedAttributedObservation {
   BigInt gasPriceSubunits = 5;
 }
 
-// BuildReportRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.BuildReport].
+// BuildReportRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.BuildReport].
 message BuildReportRequest {
   repeated ParsedAttributedObservation observations = 1;
 }
 
-// BuildReportReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.BuildReport].
+// BuildReportReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.BuildReport].
 message BuildReportReply {
   bytes report = 1;
 }
 
-// MedianFromReportRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.MedianFromReport].
+// MedianFromReportRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.MedianFromReport].
 message MedianFromReportRequest {
   bytes report = 1;
 }
 
-// MedianFromReportReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.MedianFromReport].
+// MedianFromReportReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.MedianFromReport].
 message MedianFromReportReply {
   BigInt median = 1;
 }
 
-// MaxReportLengthRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.MaxReportLength].
+// MaxReportLengthRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.MaxReportLength].
 message MaxReportLengthRequest {
   int64 n = 1;
 }
 
-// MaxReportLengthReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.ReportCodec.MaxReportLength].
+// MaxReportLengthReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.ReportCodec.MaxReportLength].
 message MaxReportLengthReply {
   int64 max = 1;
 }
@@ -88,7 +88,7 @@ service MedianContract {
 
 message LatestTransmissionDetailsRequest {}
 
-// LatestTransmissionDetailsReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestTransmissionDetails].
+// LatestTransmissionDetailsReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestTransmissionDetails].
 message LatestTransmissionDetailsReply {
   bytes configDigest = 1; // [32]byte
   uint32 epoch = 2;
@@ -97,12 +97,12 @@ message LatestTransmissionDetailsReply {
   google.protobuf.Timestamp latestTimestamp = 5;
 }
 
-// LatestRoundRequestedRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestRoundRequested].
+// LatestRoundRequestedRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestRoundRequested].
 message LatestRoundRequestedRequest {
   int64 lookback = 1; // milliseconds
 }
 
-// LatestRoundRequestedReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestRoundRequested].
+// LatestRoundRequestedReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.MedianContract.LatestRoundRequested].
 message LatestRoundRequestedReply {
   bytes configDigest = 1; // [32]byte
   uint32 epoch = 2;
@@ -114,28 +114,28 @@ service OnchainConfigCodec {
   rpc Decode (DecodeRequest) returns (DecodeReply) {}
 }
 
-// OnchainConfig represents [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfig].
+// OnchainConfig represents [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfig].
 message OnchainConfig {
   BigInt min = 1;
   BigInt max = 2;
 }
 
-// EncodeRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Encode].
+// EncodeRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Encode].
 message EncodeRequest {
   OnchainConfig onchainConfig = 1;
 }
 
-// EncodeReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Encode].
+// EncodeReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Encode].
 message EncodeReply {
   bytes encoded = 1;
 }
 
-// DecodeRequest has arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Decode].
+// DecodeRequest has arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Decode].
 message DecodeRequest {
   bytes encoded = 1;
 }
 
-// DecodeReply has return arguments for [github.com/smartcontractkit/libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Decode].
+// DecodeReply has return arguments for [github.com/goplugin/plugin-libocr/offchainreporting2/reportingplugin/median.OnchainConfigCodec.Decode].
 message DecodeReply {
   OnchainConfig onchainConfig = 1;
 }
