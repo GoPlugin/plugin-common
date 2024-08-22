@@ -1,4 +1,4 @@
-# Development and Maintenance Guide
+# Development and Maintenance Guide [![Go Reference](https://pkg.go.dev/badge/github.com/goplugin/plugin-common/pkg/loop/internal.svg)](https://pkg.go.dev/github.com/goplugin/plugin-common/pkg/loop/internal)
 
 
 ## Structure

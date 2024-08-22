@@ -134,12 +134,17 @@ func InfoToReply(info capabilities.CapabilityInfo) *capabilitiespb.CapabilityInf
 		ct = capabilitiespb.CapabilityType_CAPABILITY_TYPE_CONSENSUS
 	case capabilities.CapabilityTypeTarget:
 		ct = capabilitiespb.CapabilityType_CAPABILITY_TYPE_TARGET
+	case capabilities.CapabilityTypeUnknown:
+		ct = capabilitiespb.CapabilityType_CAPABILITY_TYPE_UNKNOWN
+	default:
+		ct = capabilitiespb.CapabilityType_CAPABILITY_TYPE_UNKNOWN
 	}
 
 	return &capabilitiespb.CapabilityInfoReply{
 		Id:             info.ID,
 		CapabilityType: ct,
 		Description:    info.Description,
+		IsLocal:        info.IsLocal,
 	}
 }
 
@@ -182,6 +187,7 @@ func InfoReplyToInfo(resp *capabilitiespb.CapabilityInfoReply) (capabilities.Cap
 		ID:             resp.Id,
 		CapabilityType: ct,
 		Description:    resp.Description,
+		IsLocal:        resp.IsLocal,
 	}, nil
 }
 
@@ -203,7 +209,10 @@ var _ capabilitiespb.TriggerExecutableServer = (*triggerExecutableServer)(nil)
 
 func (t *triggerExecutableServer) RegisterTrigger(request *capabilitiespb.CapabilityRequest,
 	server capabilitiespb.TriggerExecutable_RegisterTriggerServer) error {
-	req := pb.CapabilityRequestFromProto(request)
+	req, err := pb.CapabilityRequestFromProto(request)
+	if err != nil {
+		return fmt.Errorf("could not unmarshal capability request: %w", err)
+	}
 	responseCh, err := t.impl.RegisterTrigger(server.Context(), req)
 	if err != nil {
 		return fmt.Errorf("error registering trigger: %w", err)
@@ -239,7 +248,11 @@ func (t *triggerExecutableServer) RegisterTrigger(request *capabilitiespb.Capabi
 }
 
 func (t *triggerExecutableServer) UnregisterTrigger(ctx context.Context, request *capabilitiespb.CapabilityRequest) (*emptypb.Empty, error) {
-	if err := t.impl.UnregisterTrigger(ctx, pb.CapabilityRequestFromProto(request)); err != nil {
+	req, err := pb.CapabilityRequestFromProto(request)
+	if err != nil {
+		return nil, fmt.Errorf("could not unmarshal capability request: %w", err)
+	}
+	if err := t.impl.UnregisterTrigger(ctx, req); err != nil {
 		return nil, fmt.Errorf("error unregistering trigger: %w", err)
 	}
 
@@ -289,31 +302,42 @@ func newCallbackExecutableServer(brokerExt *net.BrokerExt, impl capabilities.Cal
 var _ capabilitiespb.CallbackExecutableServer = (*callbackExecutableServer)(nil)
 
 func (c *callbackExecutableServer) RegisterToWorkflow(ctx context.Context, req *capabilitiespb.RegisterToWorkflowRequest) (*emptypb.Empty, error) {
-	config := values.FromProto(req.Config)
+	config, err := values.FromMapValueProto(req.Config)
+	if err != nil {
+		return nil, fmt.Errorf("could not unmarshal config into map: %w", err)
+	}
 
-	err := c.impl.RegisterToWorkflow(ctx, capabilities.RegisterToWorkflowRequest{
+	err = c.impl.RegisterToWorkflow(ctx, capabilities.RegisterToWorkflowRequest{
 		Metadata: capabilities.RegistrationMetadata{
 			WorkflowID: req.Metadata.WorkflowId,
 		},
-		Config: config.(*values.Map),
+		Config: config,
 	})
 	return &emptypb.Empty{}, err
 }
 
 func (c *callbackExecutableServer) UnregisterFromWorkflow(ctx context.Context, req *capabilitiespb.UnregisterFromWorkflowRequest) (*emptypb.Empty, error) {
-	config := values.FromProto(req.Config)
+	config, err := values.FromMapValueProto(req.Config)
+	if err != nil {
+		return nil, fmt.Errorf("could not unmarshal config into map: %w", err)
+	}
 
-	err := c.impl.UnregisterFromWorkflow(ctx, capabilities.UnregisterFromWorkflowRequest{
+	err = c.impl.UnregisterFromWorkflow(ctx, capabilities.UnregisterFromWorkflowRequest{
 		Metadata: capabilities.RegistrationMetadata{
 			WorkflowID: req.Metadata.WorkflowId,
 		},
-		Config: config.(*values.Map),
+		Config: config,
 	})
 	return &emptypb.Empty{}, err
 }
 
-func (c *callbackExecutableServer) Execute(req *capabilitiespb.CapabilityRequest, server capabilitiespb.CallbackExecutable_ExecuteServer) error {
-	responseCh, err := c.impl.Execute(server.Context(), pb.CapabilityRequestFromProto(req))
+func (c *callbackExecutableServer) Execute(reqpb *capabilitiespb.CapabilityRequest, server capabilitiespb.CallbackExecutable_ExecuteServer) error {
+	req, err := pb.CapabilityRequestFromProto(reqpb)
+	if err != nil {
+		return fmt.Errorf("could not unmarshal capability request: %w", err)
+	}
+
+	responseCh, err := c.impl.Execute(server.Context(), req)
 	if err != nil {
 		return fmt.Errorf("error executing capability request: %w", err)
 	}
@@ -334,7 +358,7 @@ func (c *callbackExecutableServer) Execute(req *capabilitiespb.CapabilityRequest
 			},
 		}
 		if err = server.Send(msg); err != nil {
-			return fmt.Errorf("error sending response for execute request %s: %w", req, err)
+			return fmt.Errorf("error sending response for execute request %s: %w", reqpb, err)
 		}
 	}
 
@@ -380,7 +404,7 @@ func (c *callbackExecutableClient) UnregisterFromWorkflow(ctx context.Context, r
 	}
 
 	r := &capabilitiespb.UnregisterFromWorkflowRequest{
-		Config: values.Proto(config),
+		Config: values.ProtoMap(config),
 		Metadata: &capabilitiespb.RegistrationMetadata{
 			WorkflowId: req.Metadata.WorkflowID,
 		},
@@ -397,7 +421,7 @@ func (c *callbackExecutableClient) RegisterToWorkflow(ctx context.Context, req c
 	}
 
 	r := &capabilitiespb.RegisterToWorkflowRequest{
-		Config: values.Proto(config),
+		Config: values.ProtoMap(config),
 		Metadata: &capabilitiespb.RegistrationMetadata{
 			WorkflowId: req.Metadata.WorkflowID,
 		},
@@ -441,8 +465,15 @@ func forwardResponsesToChannel(ctx context.Context, logger logger.Logger, req ca
 				return
 			}
 
+			r, err := pb.CapabilityResponseFromProto(resp)
+			if err != nil {
+				r = capabilities.CapabilityResponse{
+					Err: err,
+				}
+			}
+
 			select {
-			case responseCh <- pb.CapabilityResponseFromProto(resp):
+			case responseCh <- r:
 			case <-ctx.Done():
 				return
 			}

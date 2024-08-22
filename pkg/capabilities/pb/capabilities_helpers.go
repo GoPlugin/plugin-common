@@ -30,7 +30,7 @@ func UnmarshalCapabilityRequest(raw []byte) (capabilities.CapabilityRequest, err
 	if err := proto.Unmarshal(raw, &cr); err != nil {
 		return capabilities.CapabilityRequest{}, err
 	}
-	return CapabilityRequestFromProto(&cr), nil
+	return CapabilityRequestFromProto(&cr)
 }
 
 func UnmarshalCapabilityResponse(raw []byte) (capabilities.CapabilityResponse, error) {
@@ -38,7 +38,7 @@ func UnmarshalCapabilityResponse(raw []byte) (capabilities.CapabilityResponse, e
 	if err := proto.Unmarshal(raw, &cr); err != nil {
 		return capabilities.CapabilityResponse{}, err
 	}
-	return CapabilityResponseFromProto(&cr), nil
+	return CapabilityResponseFromProto(&cr)
 }
 
 func CapabilityRequestToProto(req capabilities.CapabilityRequest) *CapabilityRequest {
@@ -52,14 +52,16 @@ func CapabilityRequestToProto(req capabilities.CapabilityRequest) *CapabilityReq
 	}
 	return &CapabilityRequest{
 		Metadata: &RequestMetadata{
-			WorkflowId:          req.Metadata.WorkflowID,
-			WorkflowExecutionId: req.Metadata.WorkflowExecutionID,
-			WorkflowOwner:       req.Metadata.WorkflowOwner,
-			WorkflowName:        req.Metadata.WorkflowName,
-			WorkflowDonId:       req.Metadata.WorkflowDonID,
+			WorkflowId:               req.Metadata.WorkflowID,
+			WorkflowExecutionId:      req.Metadata.WorkflowExecutionID,
+			WorkflowOwner:            req.Metadata.WorkflowOwner,
+			WorkflowName:             req.Metadata.WorkflowName,
+			WorkflowDonId:            req.Metadata.WorkflowDonID,
+			WorkflowDonConfigVersion: req.Metadata.WorkflowDonConfigVersion,
+			ReferenceId:              req.Metadata.ReferenceID,
 		},
-		Inputs: values.Proto(inputs),
-		Config: values.Proto(config),
+		Inputs: values.ProtoMap(inputs),
+		Config: values.ProtoMap(config),
 	}
 }
 
@@ -71,42 +73,64 @@ func CapabilityResponseToProto(resp capabilities.CapabilityResponse) *Capability
 
 	return &CapabilityResponse{
 		Error: errStr,
-		Value: values.Proto(resp.Value),
+		Value: values.ProtoMap(resp.Value),
 	}
 }
 
-func CapabilityRequestFromProto(pr *CapabilityRequest) capabilities.CapabilityRequest {
+func CapabilityRequestFromProto(pr *CapabilityRequest) (capabilities.CapabilityRequest, error) {
+	if pr == nil {
+		return capabilities.CapabilityRequest{}, errors.New("could not convert nil proto to CapabilityRequest")
+	}
+
 	md := pr.Metadata
-	config := values.FromProto(pr.Config)
-	inputs := values.FromProto(pr.Inputs)
-
-	return capabilities.CapabilityRequest{
-		Metadata: capabilities.RequestMetadata{
-			WorkflowID:          md.WorkflowId,
-			WorkflowExecutionID: md.WorkflowExecutionId,
-			WorkflowOwner:       md.WorkflowOwner,
-			WorkflowName:        md.WorkflowName,
-			WorkflowDonID:       md.WorkflowDonId,
-		},
-		Config: config.(*values.Map),
-		Inputs: inputs.(*values.Map),
+	if md == nil {
+		return capabilities.CapabilityRequest{}, errors.New("could not convert nil metadata to RequestMetadata")
 	}
+
+	config, err := values.FromMapValueProto(pr.Config)
+	if err != nil {
+		return capabilities.CapabilityRequest{}, err
+	}
+
+	inputs, err := values.FromMapValueProto(pr.Inputs)
+	if err != nil {
+		return capabilities.CapabilityRequest{}, err
+	}
+
+	req := capabilities.CapabilityRequest{
+		Metadata: capabilities.RequestMetadata{
+			WorkflowID:               md.WorkflowId,
+			WorkflowExecutionID:      md.WorkflowExecutionId,
+			WorkflowOwner:            md.WorkflowOwner,
+			WorkflowName:             md.WorkflowName,
+			WorkflowDonID:            md.WorkflowDonId,
+			WorkflowDonConfigVersion: md.WorkflowDonConfigVersion,
+			ReferenceID:              md.ReferenceId,
+		},
+		Config: config,
+		Inputs: inputs,
+	}
+	return req, nil
 }
 
-func CapabilityResponseFromProto(pr *CapabilityResponse) capabilities.CapabilityResponse {
-	val := values.FromProto(pr.Value)
+func CapabilityResponseFromProto(pr *CapabilityResponse) (capabilities.CapabilityResponse, error) {
+	if pr == nil {
+		return capabilities.CapabilityResponse{}, errors.New("could not convert nil proto to CapabilityResponse")
+	}
 
-	var err error
+	val, err := values.FromMapValueProto(pr.Value)
+	if err != nil {
+		return capabilities.CapabilityResponse{}, err
+	}
+
 	if pr.Error != "" {
 		err = errors.New(pr.Error)
 	}
 
 	resp := capabilities.CapabilityResponse{
-		Err: err,
-	}
-	if mval, ok := val.(*values.Map); ok {
-		resp.Value = mval
+		Err:   err,
+		Value: val,
 	}
 
-	return resp
+	return resp, nil
 }

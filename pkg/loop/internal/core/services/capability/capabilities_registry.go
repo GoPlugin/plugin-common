@@ -52,8 +52,8 @@ func toPbDON(don capabilities.DON) *pb.DON {
 	}
 }
 
-func (cr *capabilitiesRegistryClient) GetLocalNode(ctx context.Context) (capabilities.Node, error) {
-	res, err := cr.grpc.GetLocalNode(ctx, &emptypb.Empty{})
+func (cr *capabilitiesRegistryClient) LocalNode(ctx context.Context) (capabilities.Node, error) {
+	res, err := cr.grpc.LocalNode(ctx, &emptypb.Empty{})
 	if err != nil {
 		return capabilities.Node{}, err
 	}
@@ -73,6 +73,44 @@ func (cr *capabilitiesRegistryClient) GetLocalNode(ctx context.Context) (capabil
 		PeerID:         pid,
 		WorkflowDON:    toDON(res.WorkflowDON),
 		CapabilityDONs: cDONs,
+	}, nil
+}
+
+func (cr *capabilitiesRegistryClient) ConfigForCapability(ctx context.Context, capabilityID string, donID uint32) (capabilities.CapabilityConfiguration, error) {
+	res, err := cr.grpc.ConfigForCapability(ctx, &pb.ConfigForCapabilityRequest{
+		CapabilityID: capabilityID,
+		DonID:        donID,
+	})
+	if err != nil {
+		return capabilities.CapabilityConfiguration{}, err
+	}
+
+	mc, err := values.FromMapValueProto(res.CapabilityConfig.DefaultConfig)
+	if err != nil {
+		return capabilities.CapabilityConfiguration{}, fmt.Errorf("could not convert map valueproto to map: %w", err)
+	}
+
+	var remoteTriggerConfig *capabilities.RemoteTriggerConfig
+	var remoteTargetConfig *capabilities.RemoteTargetConfig
+
+	switch res.CapabilityConfig.RemoteConfig.(type) {
+	case *capabilitiespb.CapabilityConfig_RemoteTriggerConfig:
+		prtc := res.CapabilityConfig.GetRemoteTriggerConfig()
+		remoteTriggerConfig = &capabilities.RemoteTriggerConfig{}
+		remoteTriggerConfig.RegistrationRefresh = prtc.RegistrationRefresh.AsDuration()
+		remoteTriggerConfig.RegistrationExpiry = prtc.RegistrationExpiry.AsDuration()
+		remoteTriggerConfig.MinResponsesToAggregate = prtc.MinResponsesToAggregate
+		remoteTriggerConfig.MessageExpiry = prtc.MessageExpiry.AsDuration()
+	case *capabilitiespb.CapabilityConfig_RemoteTargetConfig:
+		prtc := res.CapabilityConfig.GetRemoteTargetConfig()
+		remoteTargetConfig = &capabilities.RemoteTargetConfig{}
+		remoteTargetConfig.RequestHashExcludedAttributes = prtc.RequestHashExcludedAttributes
+	}
+
+	return capabilities.CapabilityConfiguration{
+		DefaultConfig:       mc,
+		RemoteTriggerConfig: remoteTriggerConfig,
+		RemoteTargetConfig:  remoteTargetConfig,
 	}, nil
 }
 
@@ -257,8 +295,44 @@ func (c *capabilitiesRegistryServer) Get(ctx context.Context, request *pb.GetReq
 	}, nil
 }
 
-func (c *capabilitiesRegistryServer) GetLocalNode(ctx context.Context, _ *emptypb.Empty) (*pb.GetLocalNodeReply, error) {
-	node, err := c.impl.GetLocalNode(ctx)
+func (c *capabilitiesRegistryServer) ConfigForCapability(ctx context.Context, req *pb.ConfigForCapabilityRequest) (*pb.ConfigForCapabilityReply, error) {
+	cc, err := c.impl.ConfigForCapability(ctx, req.CapabilityID, req.DonID)
+	if err != nil {
+		return nil, err
+	}
+
+	ecm := values.Proto(cc.DefaultConfig).GetMapValue()
+
+	ccp := &capabilitiespb.CapabilityConfig{
+		DefaultConfig: ecm,
+	}
+
+	if cc.RemoteTriggerConfig != nil {
+		ccp.RemoteConfig = &capabilitiespb.CapabilityConfig_RemoteTriggerConfig{
+			RemoteTriggerConfig: &capabilitiespb.RemoteTriggerConfig{
+				RegistrationRefresh:     durationpb.New(cc.RemoteTriggerConfig.RegistrationRefresh),
+				RegistrationExpiry:      durationpb.New(cc.RemoteTriggerConfig.RegistrationExpiry),
+				MinResponsesToAggregate: cc.RemoteTriggerConfig.MinResponsesToAggregate,
+				MessageExpiry:           durationpb.New(cc.RemoteTriggerConfig.MessageExpiry),
+			},
+		}
+	}
+
+	if cc.RemoteTargetConfig != nil {
+		ccp.RemoteConfig = &capabilitiespb.CapabilityConfig_RemoteTargetConfig{
+			RemoteTargetConfig: &capabilitiespb.RemoteTargetConfig{
+				RequestHashExcludedAttributes: cc.RemoteTargetConfig.RequestHashExcludedAttributes,
+			},
+		}
+	}
+
+	return &pb.ConfigForCapabilityReply{
+		CapabilityConfig: ccp,
+	}, nil
+}
+
+func (c *capabilitiesRegistryServer) LocalNode(ctx context.Context, _ *emptypb.Empty) (*pb.LocalNodeReply, error) {
+	node, err := c.impl.LocalNode(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -274,7 +348,7 @@ func (c *capabilitiesRegistryServer) GetLocalNode(ctx context.Context, _ *emptyp
 	if node.PeerID != nil {
 		pid = node.PeerID[:]
 	}
-	reply := &pb.GetLocalNodeReply{
+	reply := &pb.LocalNodeReply{
 		PeerID:         pid,
 		WorkflowDON:    workflowDONpb,
 		CapabilityDONs: capabilityDONsPb,
@@ -468,6 +542,8 @@ func validateCapability(impl capabilities.BaseCapability, t capabilities.Capabil
 		if !ok {
 			return fmt.Errorf("expected TargetCapability but got %T", impl)
 		}
+	case capabilities.CapabilityTypeUnknown:
+		return fmt.Errorf("unknown capability type")
 	}
 	return nil
 }
@@ -505,6 +581,8 @@ func pbRegisterCapability(s *grpc.Server, b *net.BrokerExt, impl capabilities.Ba
 			impl:        i,
 			cancelFuncs: map[string]func(){},
 		})
+	case capabilities.CapabilityTypeUnknown:
+		// Only register the base capability server
 	}
 	capabilitiespb.RegisterBaseCapabilityServer(s, newBaseCapabilityServer(impl))
 }

@@ -13,6 +13,8 @@ import (
 
 	"github.com/goplugin/plugin-common/pkg/capabilities/consensus/ocr3/requests"
 
+	"google.golang.org/protobuf/types/known/structpb"
+
 	pbtypes "github.com/goplugin/plugin-common/pkg/capabilities/consensus/ocr3/types"
 	"github.com/goplugin/plugin-common/pkg/logger"
 	"github.com/goplugin/plugin-common/pkg/values"
@@ -53,7 +55,7 @@ func newReportingPlugin(s *requests.Store, r capabilityIface, batchSize int, con
 }
 
 func (r *reportingPlugin) Query(ctx context.Context, outctx ocr3types.OutcomeContext) (types.Query, error) {
-	batch, err := r.s.FirstN(ctx, r.batchSize)
+	batch, err := r.s.FirstN(r.batchSize)
 	if err != nil {
 		r.lggr.Errorw("could not retrieve batch", "error", err)
 		return nil, err
@@ -70,6 +72,7 @@ func (r *reportingPlugin) Query(ctx context.Context, outctx ocr3types.OutcomeCon
 			WorkflowDonId:            rq.WorkflowDonID,
 			WorkflowDonConfigVersion: rq.WorkflowDonConfigVersion,
 			ReportId:                 rq.ReportID,
+			KeyId:                    rq.KeyID,
 		})
 		allExecutionIDs = append(allExecutionIDs, rq.WorkflowExecutionID)
 	}
@@ -89,10 +92,14 @@ func (r *reportingPlugin) Observation(ctx context.Context, outctx ocr3types.Outc
 
 	weids := []string{}
 	for _, q := range queryReq.Ids {
+		if q == nil {
+			r.lggr.Debugw("skipping nil id for query", "query", queryReq)
+			continue
+		}
 		weids = append(weids, q.WorkflowExecutionId)
 	}
 
-	reqs := r.s.GetN(ctx, weids)
+	reqs := r.s.GetByIDs(weids)
 	reqMap := map[string]*requests.Request{}
 	for _, req := range reqs {
 		reqMap[req.WorkflowExecutionID] = req
@@ -121,6 +128,7 @@ func (r *reportingPlugin) Observation(ctx context.Context, outctx ocr3types.Outc
 				WorkflowDonId:            rq.WorkflowDonID,
 				WorkflowDonConfigVersion: rq.WorkflowDonConfigVersion,
 				ReportId:                 rq.ReportID,
+				KeyId:                    rq.KeyID,
 			},
 		}
 
@@ -153,25 +161,35 @@ func (r *reportingPlugin) Outcome(outctx ocr3types.OutcomeContext, query types.Q
 			continue
 		}
 
-		countedWorkflowIds := map[string]bool{}
+		countedWorkflowIDs := map[string]bool{}
 		for _, id := range obs.RegisteredWorkflowIds {
 			// Skip if we've already counted this workflow ID. we want to avoid duplicates in the seen workflow IDs.
-			if _, ok := countedWorkflowIds[id]; ok {
+			if _, ok := countedWorkflowIDs[id]; ok {
 				continue
 			}
 
 			// Count how many times a workflow ID is seen from Observations, no need for initial value since it's 0 by default.
 			seenWorkflowIDs[id]++
 
-			countedWorkflowIds[id] = true
+			countedWorkflowIDs[id] = true
 		}
 
 		for _, rq := range obs.Observations {
+			if rq == nil {
+				r.lggr.Debugw("skipping nil request in observations", "observations", obs.Observations)
+				continue
+			}
+
+			if rq.Id == nil {
+				r.lggr.Debugw("skipping nil id in request", "request", rq)
+				continue
+			}
+
 			weid := rq.Id.WorkflowExecutionId
 
-			obsList := values.FromListValueProto(rq.Observations)
-			if obsList == nil {
-				r.lggr.Errorw("observations are not a list", "weID", weid, "oracleID", o.Observer)
+			obsList, innerErr := values.FromListValueProto(rq.Observations)
+			if obsList == nil || innerErr != nil {
+				r.lggr.Errorw("observations are not a list", "weID", weid, "oracleID", o.Observer, "err", innerErr)
 				continue
 			}
 
@@ -204,6 +222,11 @@ func (r *reportingPlugin) Outcome(outctx ocr3types.OutcomeContext, query types.Q
 	var allExecutionIDs []string
 
 	for _, weid := range q.Ids {
+		if weid == nil {
+			r.lggr.Debugw("skipping nil id in query", "query", q)
+			continue
+		}
+		lggr := logger.With(r.lggr, "executionID", weid.WorkflowExecutionId, "workflowID", weid.WorkflowId)
 		obs, ok := m[weid.WorkflowExecutionId]
 		if !ok {
 			r.lggr.Debugw("could not find any observations matching weid requested in the query", "weid", weid.WorkflowExecutionId)
@@ -270,6 +293,28 @@ func (r *reportingPlugin) Outcome(outctx ocr3types.OutcomeContext, query types.Q
 	return rawOutcome, err
 }
 
+func marshalReportInfo(info *pbtypes.ReportInfo, keyID string) ([]byte, error) {
+	p, err := proto.MarshalOptions{Deterministic: true}.Marshal(info)
+	if err != nil {
+		return nil, err
+	}
+
+	infos, err := structpb.NewStruct(map[string]any{
+		"keyBundleName": keyID,
+		"reportInfo":    p,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	ip, err := proto.MarshalOptions{Deterministic: true}.Marshal(infos)
+	if err != nil {
+		return nil, err
+	}
+
+	return ip, nil
+}
+
 func (r *reportingPlugin) Reports(seqNr uint64, outcome ocr3types.Outcome) ([]ocr3types.ReportWithInfo[[]byte], error) {
 	o := &pbtypes.Outcome{}
 	err := proto.Unmarshal(outcome, o)
@@ -280,6 +325,16 @@ func (r *reportingPlugin) Reports(seqNr uint64, outcome ocr3types.Outcome) ([]oc
 	reports := []ocr3types.ReportWithInfo[[]byte]{}
 
 	for _, report := range o.CurrentReports {
+		r.lggr.Debugw("generating reports", "len", len(o.CurrentReports), "shouldReport", report.Outcome.ShouldReport, "executionID", report.Id.WorkflowExecutionId)
+
+		lggr := logger.With(
+			r.lggr,
+			"workflowID", report.Id.WorkflowId,
+			"executionID", report.Id.WorkflowExecutionId,
+			"shouldReport", report.Outcome.ShouldReport,
+		)
+
+
 		outcome, id := report.Outcome, report.Id
 
 		info := &pbtypes.ReportInfo{
@@ -312,7 +367,12 @@ func (r *reportingPlugin) Reports(seqNr uint64, outcome ocr3types.Outcome) ([]oc
 				continue
 			}
 
-			mv := values.FromMapValueProto(newOutcome.EncodableOutcome)
+			mv, err := values.FromMapValueProto(newOutcome.EncodableOutcome)
+			if err != nil {
+				r.lggr.Errorw("could not decode map from map value proto", "error", err)
+				continue
+			}
+
 			report, err = enc.Encode(context.TODO(), *mv)
 			if err != nil {
 				r.lggr.Errorw("could not encode report for workflow", "error", err, "workflowID", id.WorkflowId)
@@ -329,7 +389,7 @@ func (r *reportingPlugin) Reports(seqNr uint64, outcome ocr3types.Outcome) ([]oc
 		// Append every report, even if shouldReport = false, to let the transmitter mark the step as complete.
 		reports = append(reports, ocr3types.ReportWithInfo[[]byte]{
 			Report: report,
-			Info:   p,
+			Info:   infob,
 		})
 	}
 

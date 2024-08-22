@@ -11,9 +11,11 @@ import (
 	"github.com/goplugin/plugin-common/pkg/logger"
 	"github.com/goplugin/plugin-common/pkg/loop"
 	"github.com/goplugin/plugin-common/pkg/loop/reportingplugins"
+	ocr3rp "github.com/goplugin/plugin-common/pkg/loop/reportingplugins/ocr3"
 	commontypes "github.com/goplugin/plugin-common/pkg/types"
 	"github.com/goplugin/plugin-common/pkg/types/core"
 )
+var _ ocr3rp.ProviderServer[commontypes.PluginProvider] = (*Capability)(nil)
 
 type Capability struct {
 	loop.Plugin

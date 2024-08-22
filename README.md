@@ -8,5 +8,3 @@ Internal references
   - [loop/internal](./pkg/loop/internal/README.md)
     - Reporting plugins
     - Protobuf definitions
-  
-
