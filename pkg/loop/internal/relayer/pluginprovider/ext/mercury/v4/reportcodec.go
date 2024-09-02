@@ -3,7 +3,7 @@ package v4
 import (
 	"context"
 
-	ocr2plus_types "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	ocr2plus_types "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 	"google.golang.org/grpc"
 
 	"github.com/goplugin/plugin-common/pkg/loop/internal/pb"
