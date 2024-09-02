@@ -5,7 +5,7 @@ import (
 	"context"
 	"fmt"
 
-	ocr2plus_types "github.com/smartcontractkit/libocr/offchainreporting2plus/types"
+	ocr2plus_types "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	testtypes "github.com/goplugin/plugin-common/pkg/loop/internal/test/types"
 	mercury_v4_types "github.com/goplugin/plugin-common/pkg/types/mercury/v4"

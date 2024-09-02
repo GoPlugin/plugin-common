@@ -143,8 +143,8 @@ func (x *DON) GetConfigVersion() uint32 {
 	return 0
 }
 
-// GetLocalNode has arguments for [github.com/goplugin/plugin-common/pkg/types.CapabilitiesRegistry.GetLocalNode].
-type GetLocalNodeReply struct {
+// LocalNode has arguments for [github.com/goplugin/plugin-common/pkg/types.CapabilitiesRegistry.LocalNode].
+type LocalNodeReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields

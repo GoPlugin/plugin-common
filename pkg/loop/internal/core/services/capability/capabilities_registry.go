@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/goplugin/plugin-common/pkg/capabilities"
@@ -13,6 +14,7 @@ import (
 	"github.com/goplugin/plugin-common/pkg/loop/internal/pb"
 	"github.com/goplugin/plugin-common/pkg/types/core"
 
+	"github.com/goplugin/plugin-common/pkg/values"
 	p2ptypes "github.com/goplugin/plugin-libocr/ragep2p/types"
 )
 

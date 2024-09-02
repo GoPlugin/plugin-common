@@ -26,12 +26,18 @@ import (
 
 // reportCodecV4Server implements mercury_pb.ReportCodecV4Server by wrapping [mercury_v4_internal.ReportCodecServer]
 type reportCodecV4Server struct {
+	mercury_pb.UnimplementedReportCodecV4Server
+
+	impl *mercury_v4_internal.ReportCodecServer
 }
 
 var _ mercury_pb.ReportCodecV4Server = (*reportCodecV4Server)(nil)
 
 // newReportCodecV4Server returns a new instance of [mercury_pb.ReportCodecV4Server] which wraps [mercury_v4_internal.ReportCodecServer]
 func newReportCodecV4Server(s *grpc.Server, rc mercury_v4_types.ReportCodec) mercury_pb.ReportCodecV4Server {
+	internalServer := mercury_v4_internal.NewReportCodecServer(rc)
+	mercury_v4_pb.RegisterReportCodecServer(s, internalServer)
+	return &reportCodecV4Server{impl: internalServer}
 }
 
 func (r *reportCodecV4Server) BuildReport(ctx context.Context, request *mercury_v4_pb.BuildReportRequest) (*mercury_v4_pb.BuildReportReply, error) {

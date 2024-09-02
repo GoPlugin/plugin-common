@@ -23,6 +23,7 @@ import (
 	mercury_v2_internal "github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/ext/mercury/v2"
 	mercury_v3_internal "github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/ext/mercury/v3"
 	mercury_v4_internal "github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/ext/mercury/v4"
+	"github.com/goplugin/plugin-common/pkg/loop/internal/relayer/pluginprovider/ocr2"
 	"github.com/goplugin/plugin-common/pkg/types"
 	mercuryv1 "github.com/goplugin/plugin-common/pkg/types/mercury/v1"
 	mercuryv2 "github.com/goplugin/plugin-common/pkg/types/mercury/v2"

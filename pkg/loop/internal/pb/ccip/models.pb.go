@@ -22,6 +22,57 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type FinalityStatus int32
+
+const (
+       FinalityStatus_Unknown      FinalityStatus = 0
+       FinalityStatus_Finalized    FinalityStatus = 1
+       FinalityStatus_NotFinalized FinalityStatus = 2
+)
+
+// Enum value maps for FinalityStatus.
+var (
+       FinalityStatus_name = map[int32]string{
+               0: "Unknown",
+               1: "Finalized",
+               2: "NotFinalized",
+       }
+       FinalityStatus_value = map[string]int32{
+               "Unknown":      0,
+               "Finalized":    1,
+               "NotFinalized": 2,
+       }
+)
+
+func (x FinalityStatus) Enum() *FinalityStatus {
+       p := new(FinalityStatus)
+       *p = x
+       return p
+}
+
+func (x FinalityStatus) String() string {
+       return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (FinalityStatus) Descriptor() protoreflect.EnumDescriptor {
+       return file_models_proto_enumTypes[0].Descriptor()
+}
+
+func (FinalityStatus) Type() protoreflect.EnumType {
+       return &file_models_proto_enumTypes[0]
+}
+
+func (x FinalityStatus) Number() protoreflect.EnumNumber {
+       return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use FinalityStatus.Descriptor instead.
+func (FinalityStatus) EnumDescriptor() ([]byte, []int) {
+       return file_models_proto_rawDescGZIP(), []int{0}
+}
+
+
+
 // TxMeta is a message that contains the metadata of a transaction. It is a gRPC adapter to
 // [github.com/goplugin/plugin-common/pkg/types/ccip.TxMeta]
 type TxMeta struct {

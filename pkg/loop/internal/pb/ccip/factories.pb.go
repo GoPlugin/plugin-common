@@ -329,6 +329,7 @@ func (x *NewCommitStoreReaderRequest) Reset() {
 		mi := &file_factories_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
+	}
 }
 
 func (x *NewCommitStoreReaderRequest) String() string {

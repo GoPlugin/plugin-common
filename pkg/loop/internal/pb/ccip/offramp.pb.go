@@ -1183,19 +1183,19 @@ func (*ExecutionStateChange) Descriptor() ([]byte, []int) {
 	return file_offramp_proto_rawDescGZIP(), []int{22}
 }
 
-func (x *ExecutionStateChange) GetSeqNum() uint64 {
-	if x != nil {
-		return x.SeqNum
-	}
-	return 0
-}
+//func (x *ExecutionStateChange) GetSeqNum() uint64 {
+//	if x != nil {
+//		return x.SeqNum
+//	}
+//	return 0
+//}
 
-func (x *ExecutionStateChange) GetFinalized() bool {
-	if x != nil {
-		return x.Finalized
-	}
-	return false
-}
+//func (x *ExecutionStateChange) GetFinalized() bool {
+//	if x != nil {
+//		return x.Finalized
+//	}
+//	return false
+//}
 
 // ExecOffchainConfig is a gRPC adapter for the struct
 // [github.com/goplugin/plugin-common/pkg/types/ccip/ExecOffchainConfig]

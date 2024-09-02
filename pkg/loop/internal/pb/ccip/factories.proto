@@ -65,15 +65,15 @@ service CommitCustomHandlers {
 
 // GetTransactionStatusRequest is a gRPC adapter for the input arguments of
 // [github.com/goplugin/plugin-common/pkg/types/CCIPExecProvider.GetTransactionStatus]
-message GetTransactionStatusRequest { 
-    string transaction_id = 1;
-}
+//message GetTransactionStatusRequest { 
+//    string transaction_id = 1;
+//}
 
 // GetTransactionStatusResponse is a gRPC adapter for the output arguments of
 // [github.com/goplugin/plugin-common/pkg/types/CCIPExecProvider.GetTransactionStatus]
-message GetTransactionStatusResponse {
-	int32 transaction_status = 1;
-}
+//message GetTransactionStatusResponse {
+//	int32 transaction_status = 1;
+//}
 
 // NewCommitStoreReaderRequest is a gRPC adapter for the input arguments of
 // [github.com/goplugin/plugin-common/pkg/types/CCIPExecProvider.NewCommitStoreReader]
