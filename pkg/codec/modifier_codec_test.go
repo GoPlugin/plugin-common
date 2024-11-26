@@ -13,6 +13,7 @@ import (
 
 	"github.com/goplugin/plugin-common/pkg/codec"
 	"github.com/goplugin/plugin-common/pkg/types"
+	"github.com/goplugin/plugin-common/pkg/utils/tests"
 )
 
 var anyTestBytes = []byte("any test bytes")
@@ -29,7 +30,7 @@ const anyForEncoding = true
 func TestModifierCodec(t *testing.T) {
 	t.Parallel()
 
-	ctx := context.Background()
+	ctx := tests.Context(t)
 	mod, err := codec.NewModifierCodec(&testCodec{}, testModifier{})
 	require.NoError(t, err)
 

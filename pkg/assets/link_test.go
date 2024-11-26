@@ -199,7 +199,7 @@ func TestLink(t *testing.T) {
 		{"1000000000000000000", "1 pli"},
 		{"1000000000000000000 juels", "1 pli"},
 		{"1100000000000000000", "1.1 pli"},
-		{"1.1link", "1.1 pli"},
+		{"1.1pli", "1.1 pli"},
 		{"1.1 pli", "1.1 pli"},
 	} {
 		t.Run(tt.input, func(t *testing.T) {
@@ -216,11 +216,11 @@ func TestLink(t *testing.T) {
 func FuzzLink(f *testing.F) {
 	f.Add("1")
 	f.Add("1 pli")
-	f.Add("1.1link")
+	f.Add("1.1pli")
 	f.Add("2.3")
 	f.Add("2.3 pli")
 	f.Add("00005 pli")
-	f.Add("0.0005link")
+	f.Add("0.0005pli")
 	f.Add("1100000000000000000000000000000")
 	f.Add("1100000000000000000000000000000 juels")
 	f.Fuzz(func(t *testing.T, v string) {

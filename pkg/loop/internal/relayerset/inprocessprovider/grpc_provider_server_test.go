@@ -10,15 +10,13 @@ import (
 	ocr2types "github.com/goplugin/plugin-libocr/offchainreporting2plus/types"
 
 	"github.com/goplugin/plugin-common/pkg/logger"
-	"github.com/goplugin/plugin-common/pkg/loop/adapters/relay"
 	"github.com/goplugin/plugin-common/pkg/types"
 	"github.com/goplugin/plugin-common/pkg/utils/tests"
 )
 
 func TestProviderServer(t *testing.T) {
 	r := &mockRelayer{}
-	sa := relay.NewServerAdapter(r, mockRelayerExt{})
-	mp, _ := sa.NewPluginProvider(tests.Context(t), types.RelayArgs{ProviderType: string(types.Median)}, types.PluginArgs{})
+	mp, _ := r.NewPluginProvider(tests.Context(t), types.RelayArgs{ProviderType: string(types.Median)}, types.PluginArgs{})
 
 	lggr := logger.Test(t)
 	_, err := NewProviderServer(mp, "unsupported-type", lggr)
@@ -35,28 +33,24 @@ type mockRelayer struct {
 	types.Relayer
 }
 
-func (m *mockRelayer) NewMedianProvider(rargs types.RelayArgs, pargs types.PluginArgs) (types.MedianProvider, error) {
+func (m *mockRelayer) NewMedianProvider(ctx context.Context, rargs types.RelayArgs, pargs types.PluginArgs) (types.MedianProvider, error) {
 	return staticMedianProvider{}, nil
 }
 
-func (m *mockRelayer) NewFunctionsProvider(rargs types.RelayArgs, pargs types.PluginArgs) (types.FunctionsProvider, error) {
+func (m *mockRelayer) NewFunctionsProvider(ctx context.Context, rargs types.RelayArgs, pargs types.PluginArgs) (types.FunctionsProvider, error) {
 	return staticFunctionsProvider{}, nil
 }
 
-func (m *mockRelayer) NewMercuryProvider(rargs types.RelayArgs, pargs types.PluginArgs) (types.MercuryProvider, error) {
+func (m *mockRelayer) NewMercuryProvider(ctx context.Context, rargs types.RelayArgs, pargs types.PluginArgs) (types.MercuryProvider, error) {
 	return staticMercuryProvider{}, nil
 }
 
-func (m *mockRelayer) NewAutomationProvider(rargs types.RelayArgs, pargs types.PluginArgs) (types.AutomationProvider, error) {
+func (m *mockRelayer) NewAutomationProvider(ctx context.Context, rargs types.RelayArgs, pargs types.PluginArgs) (types.AutomationProvider, error) {
 	return staticAutomationProvider{}, nil
 }
 
-func (m *mockRelayer) NewPluginProvider(rargs types.RelayArgs, pargs types.PluginArgs) (types.PluginProvider, error) {
+func (m *mockRelayer) NewPluginProvider(ctx context.Context, rargs types.RelayArgs, pargs types.PluginArgs) (types.PluginProvider, error) {
 	return staticPluginProvider{}, nil
-}
-
-type mockRelayerExt struct {
-	relay.RelayerExt
 }
 
 type staticMedianProvider struct {

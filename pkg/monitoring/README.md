@@ -2,7 +2,7 @@
 
 ## Architecture
 
-[Plugin blueprints](https://github.com/goplugin/pluginv3.0-blueprints/blob/main/monitoring/README.md)
+[Plugin blueprints](https://github.com/goplugin/plugin-blueprints/blob/main/monitoring/README.md)
 contains a descript of the architecture of the on-chain monitor framework, the tools available for integrators
 as well as a tutorial for creating new integrations.
 
