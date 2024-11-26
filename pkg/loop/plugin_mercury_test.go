@@ -1,6 +1,7 @@
 package loop_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/hashicorp/go-plugin"
@@ -14,7 +15,6 @@ import (
 	"github.com/goplugin/plugin-common/pkg/loop/internal/test"
 	"github.com/goplugin/plugin-common/pkg/services/servicetest"
 	"github.com/goplugin/plugin-common/pkg/types"
-	"github.com/goplugin/plugin-common/pkg/utils/tests"
 )
 
 func TestPluginMercury(t *testing.T) {
@@ -66,7 +66,7 @@ func TestPluginMercuryExec(t *testing.T) {
 }
 
 func newMercuryProvider(t *testing.T, pr loop.PluginRelayer) types.MercuryProvider {
-	ctx := tests.Context(t)
+	ctx := context.Background()
 	r, err := pr.NewRelayer(ctx, test.ConfigTOML, keystoretest.Keystore, nil)
 	require.NoError(t, err)
 	servicetest.Run(t, r)

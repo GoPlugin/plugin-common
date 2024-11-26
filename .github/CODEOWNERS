@@ -1,0 +1,20 @@
+# CODEOWNERS Best Practices
+# 1. Per Github docs: "Order is important; the last matching pattern takes the most precedence."
+# Please define less specific codeowner paths before more specific codeowner paths in order for the more specific rule to have priority
+
+* @goplugin/foundations
+
+/observability-lib/ @Atrax1
+
+/pkg/capabilities/ @goplugin/keystone
+/pkg/codec/ @nolag
+/pkg/loop/ @goplugin/foundations
+/pkg/monitoring/ @topliceanu @pedrovsg
+/pkg/services/ @goplugin/foundations
+/pkg/sqlutil/ @goplugin/foundations
+/pkg/timeutil/ @goplugin/foundations
+/pkg/values/ @goplugin/keystone
+/pkg/workflows/ @goplugin/keystone
+/pkg/beholder/ @goplugin/realtime
+/pkg/types/ccipocr3 @goplugin/ccip-offchain
+/pkg/types/ccip @goplugin/ccip-offchain

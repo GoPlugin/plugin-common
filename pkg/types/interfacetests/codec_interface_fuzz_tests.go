@@ -40,18 +40,11 @@ func RunCodecInterfaceFuzzTests(f *testing.F, tester CodecInterfaceTester) {
 				Account:        tester.GetAccountBytes(accountSeed),
 				Accounts:       [][]byte{tester.GetAccountBytes(accountsSeed + 1), tester.GetAccountBytes(accountsSeed + 2)},
 				BigField:       big.NewInt(bigField),
-				NestedDynamicStruct: MidLevelDynamicTestStruct{
+				NestedStruct: MidLevelTestStruct{
 					FixedBytes: fb,
-					Inner: InnerDynamicTestStruct{
+					Inner: InnerTestStruct{
 						I: i,
 						S: s,
-					},
-				},
-				NestedStaticStruct: MidLevelStaticTestStruct{
-					FixedBytes: fb,
-					Inner: InnerStaticTestStruct{
-						I: i,
-						A: tester.GetAccountBytes(accountsSeed + 3),
 					},
 				},
 			}

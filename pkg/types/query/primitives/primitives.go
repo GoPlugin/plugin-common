@@ -1,7 +1,5 @@
 package primitives
 
-import "fmt"
-
 // Visitor should have a per chain per db type implementation that converts primitives to db queries.
 type Visitor interface {
 	Comparator(primitive Comparator)
@@ -82,17 +80,6 @@ const (
 // Confidence maps to different concepts on different blockchains.
 type Confidence struct {
 	ConfidenceLevel
-}
-
-func ConfidenceLevelFromString(value string) (ConfidenceLevel, error) {
-	switch value {
-	case "finalized":
-		return Finalized, nil
-	case "unconfirmed":
-		return Unconfirmed, nil
-	default:
-		return "", fmt.Errorf("invalid ConfidenceLevel: %s", value)
-	}
 }
 
 func (f *Confidence) Accept(visitor Visitor) {

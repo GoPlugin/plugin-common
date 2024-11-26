@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"io"
 	"reflect"
 	"testing"
 
@@ -64,12 +63,6 @@ func NewWith(cfgFn func(*zap.Config)) (Logger, error) {
 		return nil, err
 	}
 	return &logger{core.Sugar()}, nil
-}
-
-// NewWithSync returns a new Logger with a given SyncWriter.
-func NewWithSync(w io.Writer) Logger {
-	core := zapcore.NewCore(zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()), zapcore.AddSync(w), zapcore.InfoLevel)
-	return &logger{zap.New(core).Sugar()}
 }
 
 // Test returns a new test Logger for tb.

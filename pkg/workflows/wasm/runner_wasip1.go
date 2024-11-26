@@ -1,37 +1,22 @@
 package wasm
 
 import (
-	"encoding/binary"
-	"errors"
 	"os"
 	"unsafe"
 
 	"google.golang.org/protobuf/proto"
 
-	"github.com/goplugin/plugin-common/pkg/logger"
-	"github.com/goplugin/plugin-common/pkg/values"
-	"github.com/goplugin/plugin-common/pkg/workflows/sdk"
 	wasmpb "github.com/goplugin/plugin-common/pkg/workflows/wasm/pb"
 )
 
 //go:wasmimport env sendResponse
 func sendResponse(respptr unsafe.Pointer, respptrlen int32) (errno int32)
 
-//go:wasmimport env log
-func log(respptr unsafe.Pointer, respptrlen int32)
-
-//go:wasmimport env fetch
-func fetch(respptr unsafe.Pointer, resplenptr unsafe.Pointer, reqptr unsafe.Pointer, reqptrlen int32) int32
-
-const uint32Size = int32(4)
-
 func bufferToPointerLen(buf []byte) (unsafe.Pointer, int32) {
 	return unsafe.Pointer(&buf[0]), int32(len(buf))
 }
 
 func NewRunner() *Runner {
-	l := logger.NewWithSync(&wasmWriteSyncer{})
-
 	return &Runner{
 		sendResponse: func(response *wasmpb.Response) {
 			pb, err := proto.Marshal(response)
@@ -61,74 +46,6 @@ func NewRunner() *Runner {
 
 			os.Exit(code)
 		},
-		sdkFactory: func(sdkConfig *RuntimeConfig) *Runtime {
-			return &Runtime{
-				logger: l,
-				fetchFn: func(req sdk.FetchRequest) (sdk.FetchResponse, error) {
-					headerspb, err := values.NewMap(req.Headers)
-					if err != nil {
-						os.Exit(CodeInvalidRequest)
-					}
-
-					b, err := proto.Marshal(&wasmpb.FetchRequest{
-						Url:       req.URL,
-						Method:    req.Method,
-						Headers:   values.ProtoMap(headerspb),
-						Body:      req.Body,
-						TimeoutMs: req.TimeoutMs,
-					})
-					if err != nil {
-						os.Exit(CodeInvalidRequest)
-					}
-					reqptr, reqptrlen := bufferToPointerLen(b)
-
-					respBuffer := make([]byte, sdkConfig.MaxFetchResponseSizeBytes)
-					respptr, _ := bufferToPointerLen(respBuffer)
-
-					resplenBuffer := make([]byte, uint32Size)
-					resplenptr, _ := bufferToPointerLen(resplenBuffer)
-
-					errno := fetch(respptr, resplenptr, reqptr, reqptrlen)
-					if errno != 0 {
-						os.Exit(CodeRunnerErr)
-					}
-
-					responseSize := binary.LittleEndian.Uint32(resplenBuffer)
-					response := &wasmpb.FetchResponse{}
-					err = proto.Unmarshal(respBuffer[:responseSize], response)
-					if err != nil {
-						l.Errorw("failed to unmarshal fetch response", "error", err.Error())
-						os.Exit(CodeInvalidResponse)
-					}
-
-					fields := response.Headers.GetFields()
-					headersResp := make(map[string]any, len(fields))
-					for k, v := range fields {
-						headersResp[k] = v
-					}
-
-					if response.ErrorMessage != "" {
-						return sdk.FetchResponse{}, errors.New(response.ErrorMessage)
-					}
-
-					return sdk.FetchResponse{
-						Success:    response.Success,
-						StatusCode: uint8(response.StatusCode),
-						Headers:    headersResp,
-						Body:       response.Body,
-					}, nil
-				},
-			}
-		},
 		args: os.Args,
 	}
-}
-
-type wasmWriteSyncer struct{}
-
-// Write is used to proxy log requests from the WASM binary back to the host
-func (wws *wasmWriteSyncer) Write(p []byte) (n int, err error) {
-	ptr, ptrlen := bufferToPointerLen(p)
-	log(ptr, ptrlen)
-	return int(ptrlen), nil
 }
