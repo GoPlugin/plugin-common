@@ -32,10 +32,10 @@ require (
 	github.com/riferrei/srclient v0.5.4
 	github.com/santhosh-tekuri/jsonschema/v5 v5.2.0
 	github.com/shopspring/decimal v1.4.0
-	github.com/goplugin/grpc-proxy v0.1.1 //plugin update changes
 	//github.com/goplugin/grpc-proxy v0.0.0-20240830132753-a7e17fec5ab7
-	github.com/goplugin/plugin-libocr v0.1.1-beta //plugin update changes
-	//github.com/goplugin/plugin-libocr v0.0.0-20240419185742-fd3cab206b2c
+	github.com/goplugin/grpc-proxy v0.1.1 //plugin update changes
+	//github.com/goplugin/plugin-libocr v0.0.0-20241007185508-adbe57025f12
+	github.com/goplugin/plugin-libocr v0.1.1 //plugin update changes
 	github.com/stretchr/testify v1.9.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.52.0
 	go.opentelemetry.io/otel v1.28.0

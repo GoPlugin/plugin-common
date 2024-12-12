@@ -1,7 +1,6 @@
 package loop_test
 
 import (
-	"context"
 	"testing"
 	"time"
 
@@ -17,6 +16,7 @@ import (
 	"github.com/goplugin/plugin-common/pkg/services/servicetest"
 	"github.com/goplugin/plugin-common/pkg/types"
 	"github.com/goplugin/plugin-common/pkg/types/core"
+	"github.com/goplugin/plugin-common/pkg/utils/tests"
 )
 
 func TestPluginMedian(t *testing.T) {
@@ -83,7 +83,7 @@ func newStopCh(t *testing.T) <-chan struct{} {
 }
 
 func newMedianProvider(t *testing.T, pr loop.PluginRelayer) types.MedianProvider {
-	ctx := context.Background()
+	ctx := tests.Context(t)
 	r, err := pr.NewRelayer(ctx, test.ConfigTOML, keystoretest.Keystore, nil)
 	require.NoError(t, err)
 	servicetest.Run(t, r)
