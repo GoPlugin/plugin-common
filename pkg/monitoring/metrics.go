@@ -60,7 +60,7 @@ var (
 	linkAvailableForPayment = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "link_available_for_payments",
-			Help: "Reports the amount of link the contract can use to make payments to node operators. This may be different from the PLI balance of the contract since that can contain debt",
+			Help: "Reports the amount of pli the contract can use to make payments to node operators. This may be different from the PLI balance of the contract since that can contain debt",
 		},
 		[]string{"feed_id", "chain_id", "contract_status", "contract_type", "feed_name", "feed_path", "network_id", "network_name"},
 	)
