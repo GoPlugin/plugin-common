@@ -261,7 +261,7 @@ func (r *relayerClient) NewPluginProvider(ctx context.Context, rargs types.Relay
 
 	broker := r.BrokerExt
 
-	return WrapProviderClientConnection(ctx, rargs.ProviderType, cc, broker)
+	return WrapProviderClientConnection(rargs.ProviderType, cc, broker)
 }
 
 type PluginProviderClient interface {
@@ -269,15 +269,13 @@ type PluginProviderClient interface {
 	goplugin.GRPCClientConn
 }
 
-func WrapProviderClientConnection(ctx context.Context, providerType string, cc grpc.ClientConnInterface, broker *net.BrokerExt) (PluginProviderClient, error) {
+func WrapProviderClientConnection(providerType string, cc grpc.ClientConnInterface, broker *net.BrokerExt) (PluginProviderClient, error) {
 	// TODO: Remove this when we have fully transitioned all relayers to running in LOOPPs.
 	// This allows callers to type assert a PluginProvider into a product provider type (eg. MedianProvider)
 	// for interoperability with legacy code.
 	switch providerType {
 	case string(types.Median):
-		pc := median.NewProviderClient(broker, cc)
-		pc.RmUnimplemented(ctx)
-		return pc, nil
+		return median.NewProviderClient(broker, cc), nil
 	case string(types.GenericPlugin):
 		return ocr2.NewPluginProviderClient(broker, cc), nil
 	case string(types.OCR3Capability):

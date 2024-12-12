@@ -13,7 +13,7 @@ import (
 )
 
 func GetWorkflowSpec(modCfg *ModuleConfig, binary []byte, config []byte) (*sdk.WorkflowSpec, error) {
-	m, err := NewModule(modCfg, binary, WithDeterminism())
+	m, err := NewModule(modCfg, binary)
 	if err != nil {
 		return nil, fmt.Errorf("could not instantiate module: %w", err)
 	}

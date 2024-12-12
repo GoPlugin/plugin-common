@@ -7,7 +7,6 @@ import (
 	"slices"
 	"time"
 
-	"github.com/goplugin/plugin-libocr/quorumhelper"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -28,8 +27,7 @@ var _ ocr3types.ReportingPlugin[[]byte] = (*reportingPlugin)(nil)
 
 type capabilityIface interface {
 	getAggregator(workflowID string) (pbtypes.Aggregator, error)
-	getEncoderByWorkflowID(workflowID string) (pbtypes.Encoder, error)
-	getEncoderByName(encoderName string, config *values.Map) (pbtypes.Encoder, error)
+	getEncoder(workflowID string) (pbtypes.Encoder, error)
 	getRegisteredWorkflowsIDs() []string
 	unregisterWorkflowID(workflowID string)
 }
@@ -150,15 +148,15 @@ func (r *reportingPlugin) Observation(ctx context.Context, outctx ocr3types.Outc
 	return proto.MarshalOptions{Deterministic: true}.Marshal(obs)
 }
 
-func (r *reportingPlugin) ValidateObservation(ctx context.Context, outctx ocr3types.OutcomeContext, query types.Query, ao types.AttributedObservation) error {
+func (r *reportingPlugin) ValidateObservation(outctx ocr3types.OutcomeContext, query types.Query, ao types.AttributedObservation) error {
 	return nil
 }
 
-func (r *reportingPlugin) ObservationQuorum(ctx context.Context, outctx ocr3types.OutcomeContext, query types.Query, aos []types.AttributedObservation) (bool, error) {
-	return quorumhelper.ObservationCountReachesObservationQuorum(quorumhelper.QuorumTwoFPlusOne, r.config.N, r.config.F, aos), nil
+func (r *reportingPlugin) ObservationQuorum(outctx ocr3types.OutcomeContext, query types.Query) (ocr3types.Quorum, error) {
+	return ocr3types.QuorumTwoFPlusOne, nil
 }
 
-func (r *reportingPlugin) Outcome(ctx context.Context, outctx ocr3types.OutcomeContext, query types.Query, attributedObservations []types.AttributedObservation) (ocr3types.Outcome, error) {
+func (r *reportingPlugin) Outcome(outctx ocr3types.OutcomeContext, query types.Query, attributedObservations []types.AttributedObservation) (ocr3types.Outcome, error) {
 	// execution ID -> oracle ID -> list of observations
 	execIDToOracleObservations := map[string]map[ocrcommon.OracleID][]values.Value{}
 	seenWorkflowIDs := map[string]int{}
@@ -351,14 +349,14 @@ func marshalReportInfo(info *pbtypes.ReportInfo, keyID string) ([]byte, error) {
 	return ip, nil
 }
 
-func (r *reportingPlugin) Reports(ctx context.Context, seqNr uint64, outcome ocr3types.Outcome) ([]ocr3types.ReportPlus[[]byte], error) {
+func (r *reportingPlugin) Reports(seqNr uint64, outcome ocr3types.Outcome) ([]ocr3types.ReportWithInfo[[]byte], error) {
 	o := &pbtypes.Outcome{}
 	err := proto.Unmarshal(outcome, o)
 	if err != nil {
 		return nil, err
 	}
 
-	reports := []ocr3types.ReportPlus[[]byte]{}
+	reports := []ocr3types.ReportWithInfo[[]byte]{}
 
 	for _, report := range o.CurrentReports {
 		if report == nil {
@@ -392,7 +390,7 @@ func (r *reportingPlugin) Reports(ctx context.Context, seqNr uint64, outcome ocr
 			ShouldReport: outcome.ShouldReport,
 		}
 
-		var rawReport []byte
+		var report []byte
 		if info.ShouldReport {
 			meta := &pbtypes.Metadata{
 				Version:          1,
@@ -411,26 +409,10 @@ func (r *reportingPlugin) Reports(ctx context.Context, seqNr uint64, outcome ocr
 				continue
 			}
 
-			var encoder pbtypes.Encoder
-			if newOutcome.EncoderName != "" {
-				lggr.Debugw("using encoder from outcome", "encoderName", newOutcome.EncoderName, "executionID", report.Id.WorkflowExecutionId)
-				encoderConfig, err2 := values.FromMapValueProto(newOutcome.EncoderConfig)
-				if err2 != nil {
-					lggr.Errorw("could not convert desired encoder config to values.Map", "error", err2, "executionID", report.Id.WorkflowExecutionId)
-				} else {
-					encoder, err2 = r.r.getEncoderByName(newOutcome.EncoderName, encoderConfig)
-					if err2 != nil {
-						lggr.Errorw("could not retrieve desired encoder, will use per-workflow default", "error", err2, "executionID", report.Id.WorkflowExecutionId)
-					}
-				}
-			}
-
-			if encoder == nil {
-				encoder, err = r.r.getEncoderByWorkflowID(id.WorkflowId)
-				if err != nil {
-					lggr.Errorw("could not retrieve encoder for workflow", "error", err)
-					continue
-				}
+			enc, err := r.r.getEncoder(id.WorkflowId)
+			if err != nil {
+				lggr.Errorw("could not retrieve encoder for workflow", "error", err)
+				continue
 			}
 
 			mv, err := values.FromMapValueProto(newOutcome.EncodableOutcome)
@@ -439,12 +421,8 @@ func (r *reportingPlugin) Reports(ctx context.Context, seqNr uint64, outcome ocr
 				continue
 			}
 
-			rawReport, err = encoder.Encode(ctx, *mv)
+			report, err = enc.Encode(context.Background(), *mv)
 			if err != nil {
-				if cerr := ctx.Err(); cerr != nil {
-					r.lggr.Errorw("report encoding cancelled", "err", cerr)
-					return nil, cerr
-				}
 				r.lggr.Errorw("could not encode report for workflow", "error", err)
 				continue
 			}
@@ -457,11 +435,9 @@ func (r *reportingPlugin) Reports(ctx context.Context, seqNr uint64, outcome ocr
 		}
 
 		// Append every report, even if shouldReport = false, to let the transmitter mark the step as complete.
-		reports = append(reports, ocr3types.ReportPlus[[]byte]{
-			ReportWithInfo: ocr3types.ReportWithInfo[[]byte]{
-				Report: rawReport,
-				Info:   infob,
-			},
+		reports = append(reports, ocr3types.ReportWithInfo[[]byte]{
+			Report: report,
+			Info:   infob,
 		})
 	}
 

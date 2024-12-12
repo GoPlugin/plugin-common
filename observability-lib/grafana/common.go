@@ -6,7 +6,7 @@ func datasourceRef(uid string) dashboard.DataSourceRef {
 	return dashboard.DataSourceRef{Uid: &uid}
 }
 
-func inc(p *uint32) uint32 {
+func Inc(p *uint32) uint32 {
 	*p++
 	return *p
 }

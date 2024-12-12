@@ -116,7 +116,7 @@ func newThresholdConditionsOptions(options []ThresholdConditionsOption) []struct
 	return conditions
 }
 
-func newConditionQuery(options ConditionQuery) *alerting.QueryBuilder {
+func newConditionQuery(options *ConditionQuery) *alerting.QueryBuilder {
 	if options.IntervalMs == nil {
 		options.IntervalMs = Pointer[float64](1000)
 	}
@@ -173,18 +173,17 @@ func newConditionQuery(options ConditionQuery) *alerting.QueryBuilder {
 }
 
 type AlertOptions struct {
-	Name              string
-	Datasource        string
-	Summary           string
-	Description       string
-	RunbookURL        string
-	For               string
-	NoDataState       alerting.RuleNoDataState
-	RuleExecErrState  alerting.RuleExecErrState
-	Tags              map[string]string
-	Query             []RuleQuery
-	QueryRefCondition string
-	Condition         []ConditionQuery
+	Name             string
+	Datasource       string
+	Summary          string
+	Description      string
+	RunbookURL       string
+	For              string
+	NoDataState      alerting.RuleNoDataState
+	RuleExecErrState alerting.RuleExecErrState
+	Tags             map[string]string
+	Query            []RuleQuery
+	Condition        *ConditionQuery
 }
 
 func NewAlertRule(options *AlertOptions) *alerting.RuleBuilder {
@@ -200,15 +199,11 @@ func NewAlertRule(options *AlertOptions) *alerting.RuleBuilder {
 		options.RuleExecErrState = alerting.RuleExecErrStateAlerting
 	}
 
-	if options.QueryRefCondition == "" {
-		options.QueryRefCondition = "A"
-	}
-
 	rule := alerting.NewRuleBuilder(options.Name).
 		For(options.For).
+		Condition(options.Condition.RefID).
 		NoDataState(options.NoDataState).
 		ExecErrState(options.RuleExecErrState).
-		Condition(options.QueryRefCondition).
 		Annotations(map[string]string{
 			"summary":     options.Summary,
 			"description": options.Description,
@@ -220,9 +215,7 @@ func NewAlertRule(options *AlertOptions) *alerting.RuleBuilder {
 		rule.WithQuery(newRuleQuery(query))
 	}
 
-	for _, condition := range options.Condition {
-		rule.WithQuery(newConditionQuery(condition))
-	}
+	rule.WithQuery(newConditionQuery(options.Condition))
 
 	return rule
 }

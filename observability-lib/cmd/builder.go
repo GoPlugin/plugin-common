@@ -3,13 +3,14 @@ package cmd
 import (
 	"errors"
 
-	atlasdon "github.com/goplugin/plugin-common/observability-lib/dashboards/atlas-don"
-	"github.com/goplugin/plugin-common/observability-lib/dashboards/capabilities"
-	corenode "github.com/goplugin/plugin-common/observability-lib/dashboards/core-node"
-	corenodecomponents "github.com/goplugin/plugin-common/observability-lib/dashboards/core-node-components"
-	k8sresources "github.com/goplugin/plugin-common/observability-lib/dashboards/k8s-resources"
-	nopocr "github.com/goplugin/plugin-common/observability-lib/dashboards/nop-ocr"
+	"github.com/goplugin/plugin-common/observability-lib/capabilities"
+
+	atlasdon "github.com/goplugin/plugin-common/observability-lib/atlas-don"
+	corenode "github.com/goplugin/plugin-common/observability-lib/core-node"
+	corenodecomponents "github.com/goplugin/plugin-common/observability-lib/core-node-components"
 	"github.com/goplugin/plugin-common/observability-lib/grafana"
+	k8sresources "github.com/goplugin/plugin-common/observability-lib/k8s-resources"
+	nopocr "github.com/goplugin/plugin-common/observability-lib/nop-ocr"
 )
 
 type TypeDashboard string
@@ -43,7 +44,6 @@ type BuildOptions struct {
 	SlackChannel      string
 	SlackWebhookURL   string
 	AlertsTags        map[string]string
-	AlertsFilters     string
 }
 
 func BuildDashboardWithType(options *BuildOptions) (*grafana.Dashboard, error) {
@@ -56,7 +56,6 @@ func BuildDashboardWithType(options *BuildOptions) (*grafana.Dashboard, error) {
 			SlackChannel:      options.SlackChannel,
 			SlackWebhookURL:   options.SlackWebhookURL,
 			AlertsTags:        options.AlertsTags,
-			AlertsFilters:     options.AlertsFilters,
 		})
 	case TypeDashboardCoreNodeComponents:
 		return corenodecomponents.NewDashboard(&corenodecomponents.Props{
@@ -76,18 +75,21 @@ func BuildDashboardWithType(options *BuildOptions) (*grafana.Dashboard, error) {
 	case TypeDashboardDONOCR:
 		return atlasdon.NewDashboard(&atlasdon.Props{
 			Name:              options.Name,
+			Platform:          options.Platform,
 			MetricsDataSource: options.MetricsDataSource,
 			OCRVersion:        string(OCRVersionOCR),
 		})
 	case TypeDashboardDONOCR2:
 		return atlasdon.NewDashboard(&atlasdon.Props{
 			Name:              options.Name,
+			Platform:          options.Platform,
 			MetricsDataSource: options.MetricsDataSource,
 			OCRVersion:        string(OCRVersionOCR2),
 		})
 	case TypeDashboardDONOCR3:
 		return atlasdon.NewDashboard(&atlasdon.Props{
 			Name:              options.Name,
+			Platform:          options.Platform,
 			MetricsDataSource: options.MetricsDataSource,
 			OCRVersion:        string(OCRVersionOCR3),
 		})

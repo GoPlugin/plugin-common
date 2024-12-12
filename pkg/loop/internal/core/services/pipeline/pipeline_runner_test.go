@@ -13,7 +13,6 @@ import (
 	"github.com/goplugin/plugin-common/pkg/loop/internal/pb"
 	"github.com/goplugin/plugin-common/pkg/types/core"
 	"github.com/goplugin/plugin-common/pkg/utils/jsonserializable"
-	"github.com/goplugin/plugin-common/pkg/utils/tests"
 )
 
 type mockPipelineRunner struct {
@@ -38,7 +37,6 @@ func (c *clientAdapter) ExecuteRun(ctx context.Context, in *pb.RunRequest, opts 
 }
 
 func TestPipelineRunnerService(t *testing.T) {
-	ctx := tests.Context(t)
 	originalResults := []core.TaskResult{
 		{
 			ID: "1",
@@ -66,7 +64,7 @@ func TestPipelineRunnerService(t *testing.T) {
 	client := &pipelineRunnerServiceClient{grpc: &clientAdapter{srv: srv}}
 
 	trs, err := client.ExecuteRun(
-		ctx,
+		context.Background(),
 		"my-spec",
 		core.Vars{Vars: map[string]interface{}{"my-vars": true}},
 		core.Options{MaxTaskDuration: 10 * time.Second},
@@ -76,7 +74,6 @@ func TestPipelineRunnerService(t *testing.T) {
 }
 
 func TestPipelineRunnerService_CallArgs(t *testing.T) {
-	ctx := tests.Context(t)
 	mpr := &mockPipelineRunner{}
 	srv := &RunnerServer{impl: mpr}
 	client := &pipelineRunnerServiceClient{grpc: &clientAdapter{srv: srv}}
@@ -88,7 +85,7 @@ func TestPipelineRunnerService_CallArgs(t *testing.T) {
 	options := core.Options{
 		MaxTaskDuration: 10 * time.Second,
 	}
-	_, err := client.ExecuteRun(ctx, spec, vars, options)
+	_, err := client.ExecuteRun(context.Background(), spec, vars, options)
 	require.NoError(t, err)
 	assert.Equal(t, spec, mpr.spec)
 	assert.Equal(t, vars, mpr.vars)

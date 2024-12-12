@@ -61,8 +61,6 @@ type ContractReader interface {
 
 	// QueryKey provides fetching chain agnostic events (Sequence) with general querying capability.
 	QueryKey(ctx context.Context, contract BoundContract, filter query.KeyFilter, limitAndSort query.LimitAndSort, sequenceDataType any) ([]Sequence, error)
-
-	mustEmbedUnimplementedContractReader()
 }
 
 // BatchGetLatestValuesRequest string is contract name.
@@ -165,5 +163,3 @@ func (UnimplementedContractReader) Name() string {
 func (UnimplementedContractReader) Ready() error {
 	return UnimplementedError("ContractReader.Ready unimplemented")
 }
-
-func (UnimplementedContractReader) mustEmbedUnimplementedContractReader() {}

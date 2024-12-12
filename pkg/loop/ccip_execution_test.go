@@ -1,6 +1,7 @@
 package loop_test
 
 import (
+	"context"
 	"os/exec"
 	"sync/atomic"
 	"testing"
@@ -20,7 +21,6 @@ import (
 	"github.com/goplugin/plugin-common/pkg/loop/internal/test"
 	"github.com/goplugin/plugin-common/pkg/services/servicetest"
 	"github.com/goplugin/plugin-common/pkg/types"
-	"github.com/goplugin/plugin-common/pkg/utils/tests"
 )
 
 func TestExecService(t *testing.T) {
@@ -111,7 +111,7 @@ func TestExecLOOP(t *testing.T) {
 }
 
 func newExecutionProvider(t *testing.T, pr loop.PluginRelayer) (types.CCIPExecProvider, error) {
-	ctx := tests.Context(t)
+	ctx := context.Background()
 	r, err := pr.NewRelayer(ctx, test.ConfigTOML, keystoretest.Keystore, nil)
 	require.NoError(t, err)
 	servicetest.Run(t, r)

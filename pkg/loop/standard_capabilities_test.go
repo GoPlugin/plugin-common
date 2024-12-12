@@ -1,6 +1,7 @@
 package loop_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/hashicorp/go-plugin"
@@ -12,7 +13,6 @@ import (
 	"github.com/goplugin/plugin-common/pkg/loop"
 	sctest "github.com/goplugin/plugin-common/pkg/loop/internal/core/services/capability/standard/test"
 	"github.com/goplugin/plugin-common/pkg/loop/internal/test"
-	"github.com/goplugin/plugin-common/pkg/utils/tests"
 )
 
 func TestPluginStandardCapabilities(t *testing.T) {
@@ -29,32 +29,30 @@ func TestPluginStandardCapabilities(t *testing.T) {
 				Logger: logger.Test(t),
 				StopCh: stopCh}},
 		func(t *testing.T, s loop.StandardCapabilities) {
-			ctx := tests.Context(t)
-			infos, err := s.Infos(ctx)
+			infos, err := s.Infos(context.Background())
 			assert.NoError(t, err)
 			assert.Equal(t, 2, len(infos))
 			assert.Equal(t, capabilities.CapabilityTypeAction, infos[0].CapabilityType)
 			assert.Equal(t, capabilities.CapabilityTypeTarget, infos[1].CapabilityType)
 
-			err = s.Initialise(ctx, "", nil, nil, nil, nil, nil, nil, nil)
+			err = s.Initialise(context.Background(), "", nil, nil, nil, nil, nil, nil)
 			assert.NoError(t, err)
 		})
 }
 
 func TestRunningStandardCapabilitiesPluginOutOfProcess(t *testing.T) {
 	t.Parallel()
-	ctx := tests.Context(t)
 	stopCh := newStopCh(t)
 
 	scs := newOutOfProcessStandardCapabilitiesService(t, true, stopCh)
 
-	infos, err := scs.Infos(ctx)
+	infos, err := scs.Infos(context.Background())
 	assert.NoError(t, err)
 	assert.Equal(t, 2, len(infos))
 	assert.Equal(t, capabilities.CapabilityTypeAction, infos[0].CapabilityType)
 	assert.Equal(t, capabilities.CapabilityTypeTarget, infos[1].CapabilityType)
 
-	err = scs.Initialise(ctx, "", nil, nil, nil, nil, nil, nil, nil)
+	err = scs.Initialise(context.Background(), "", nil, nil, nil, nil, nil, nil)
 	assert.NoError(t, err)
 }
 

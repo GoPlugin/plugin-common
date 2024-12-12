@@ -5,7 +5,7 @@
 package notstreamstest
 
 import (
-	"github.com/goplugin/plugin-common/pkg/workflows/sdk/testdata/fixtures/capabilities/notstreams"
+	"github.com/goplugin/plugin-common/pkg/capabilities/triggers/notstreams"
 	"github.com/goplugin/plugin-common/pkg/workflows/sdk/testutils"
 )
 
